@@ -1,3 +1,16 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": ["next/core-web-vitals", "prettier"],
+  "rules": {
+    "prefer-const": "error", //prevents unnecessary usage of let instead of const
+    "prefer-promise-reject-errors": "error",
+    "prefer-arrow-callback": "error", //prefer arrow functions
+    "prefer-template": "error", //prefer usage of template literals
+    "padding-line-between-statements": [
+      "error",
+      { "blankLine": "always", "prev": "*", "next": "function" },
+      { "blankLine": "always", "prev": "function", "next": "*" }
+    ],
+    "eqeqeq": "error"
+    // "prefer-destructuring": "error"
+  }
 }
