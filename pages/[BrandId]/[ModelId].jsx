@@ -4,6 +4,10 @@ import BreadCrumb from "@/components/common/BreadCrumb";
 import ProductList from "@/components/lists/ProductList";
 import usePagination from "@/hooks/usePagination";
 import GlobalLoader from "@/components/loaders/GlobalLoader";
+import {
+  getAllModelNames,
+  getProductDataByBrandIdAndModelId,
+} from "@/config/api";
 
 const ModelId = ({ productData }) => {
   const [producDataState, setProducDataState] = useState(productData);
@@ -36,11 +40,8 @@ const ModelId = ({ productData }) => {
 export default ModelId;
 
 export async function getStaticPaths() {
-  const apiUrl = process.env.API_BASE_URL;
   try {
-    const response = await axios.get(`${apiUrl}/api/brands/models`);
-    const brandData = response.data;
-
+    const brandData = await getAllModelNames();
     const paths = brandData.map((brand) => ({
       params: { BrandId: brand.brandName, ModelId: brand.modelName },
     }));
@@ -50,7 +51,6 @@ export async function getStaticPaths() {
       fallback: false,
     };
   } catch (error) {
-    console.error("Error fetching brand data:", error);
     return {
       paths: [],
       fallback: false,
@@ -60,13 +60,9 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   const { BrandId, ModelId } = params;
-  const apiUrl = process.env.API_BASE_URL;
-
   try {
-    const response = await axios.get(
-      `${apiUrl}/api/products/model/${BrandId}/${ModelId}?page=1`
-    );
-    const productData = response.data.products;
+    const response = await getProductDataByBrandIdAndModelId(BrandId, ModelId);
+    const productData = response.products;
 
     return {
       props: {
@@ -74,7 +70,6 @@ export async function getStaticProps({ params }) {
       },
     };
   } catch (error) {
-    console.error("Error fetching product data:", error);
     return {
       props: {
         productData: [],

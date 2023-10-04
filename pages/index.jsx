@@ -79,7 +79,12 @@ export default function Home({ brandsWithModels }) {
             {/* Search button */}
             <button
               onClick={handleSearch}
-              className="bg-gray-300 px-8 py-2 rounded mt-5"
+              className="px-8 py-2 rounded mt-5"
+              style={{
+                backgroundColor: !selectedBrand
+                  ? "rgb(209 213 219 "
+                  : "#ffd84d",
+              }}
             >
               Search
             </button>
@@ -129,7 +134,6 @@ export async function getStaticProps() {
       },
     };
   } catch (error) {
-    console.error("Error fetching product data:", error);
     return {
       props: {
         brandsWithModels: {},

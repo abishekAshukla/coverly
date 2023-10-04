@@ -1,11 +1,13 @@
 import Heading from "@/components/widgets/Heading";
 import MainButton from "@/components/widgets/MainButton";
+import BreadCrumb from "@/components/common/BreadCrumb";
 import api from "@/config/api";
 import { SignUpValidation } from "@/schema/SignupPageValidation";
 import { useFormik } from "formik";
 import { FaUserCheck } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const Signup = () => {
   const router = useRouter();
@@ -56,37 +58,23 @@ const Signup = () => {
   });
 
   return (
-    <div className="flex flex-col justify-center items-center mt-7">
+    <div className="flex flex-col justify-center items-center pt-3">
+      <BreadCrumb />
       <Heading text="Sign Up for an Account" />
       <form
-        className="border-2 w-4/5 lg:w-2/5 p-5 mt-5"
+        className="border-2 w-4/5 lg:w-2/5 px-5 py-2  mt-2"
         onSubmit={formik.handleSubmit}
       >
         {/* Email Input */}
         <div className="relative z-0 w-full mb-6 group">
-          <label
-            htmlFor="email"
-            className={`peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform ${
-              formik.touched.email && formik.errors.email
-                ? "text-red-500"
-                : "text-gray-500"
-            } ${
-              formik.touched.email
-                ? "-translate-y-6 scale-75 top-3 -z-10 origin-[0]"
-                : ""
-            } peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 ${
-              formik.touched.email
-                ? "peer-focus:scale-75 peer-focus:-translate-y-6"
-                : ""
-            }`}
-          >
+          <label htmlFor="email" className="">
             Email address
           </label>
           <input
             type="email"
             name="email"
             id="email"
-            className={`block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 ${
+            className={`block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0  border-b-2 ${
               formik.touched.email && formik.errors.email
                 ? "border-red-500"
                 : "border-gray-300"
@@ -104,29 +92,14 @@ const Signup = () => {
 
         {/* Password Input */}
         <div className="relative z-0 w-full mb-6 group">
-          <label
-            htmlFor="password"
-            className={`peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform ${
-              formik.touched.password && formik.errors.password
-                ? "text-red-500"
-                : "text-gray-500"
-            } ${
-              formik.touched.password
-                ? "-translate-y-6 scale-75 top-3 -z-10 origin-[0]"
-                : ""
-            } peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 ${
-              formik.touched.password
-                ? "peer-focus:scale-75 peer-focus:-translate-y-6"
-                : ""
-            }`}
-          >
+          <label htmlFor="password" className="">
             Password
           </label>
           <input
             type="password"
             name="password"
             id="password"
-            className={`block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 ${
+            className={`block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0  border-b-2 ${
               formik.touched.password && formik.errors.password
                 ? "border-red-500"
                 : "border-gray-300"
@@ -144,29 +117,14 @@ const Signup = () => {
 
         {/* Repeat Password Input */}
         <div className="relative z-0 w-full mb-6 group">
-          <label
-            htmlFor="repeatPassword"
-            className={`peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform ${
-              formik.touched.repeatPassword && formik.errors.repeatPassword
-                ? "text-red-500"
-                : "text-gray-500"
-            } ${
-              formik.touched.repeatPassword
-                ? "-translate-y-6 scale-75 top-3 -z-10 origin-[0]"
-                : ""
-            } peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 ${
-              formik.touched.repeatPassword
-                ? "peer-focus:scale-75 peer-focus:-translate-y-6"
-                : ""
-            }`}
-          >
-            Confirm password
+          <label htmlFor="repeatPassword" className="">
+            Repeat Password
           </label>
           <input
-            type="password"
+            type="repeatPassword"
             name="repeatPassword"
             id="repeatPassword"
-            className={`block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 ${
+            className={`block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0  border-b-2 ${
               formik.touched.repeatPassword && formik.errors.repeatPassword
                 ? "border-red-500"
                 : "border-gray-300"
@@ -175,7 +133,6 @@ const Signup = () => {
             required
             {...formik.getFieldProps("repeatPassword")}
           />
-
           {formik.touched.repeatPassword && formik.errors.repeatPassword ? (
             <div className="text-red-500 text-sm mt-1">
               {formik.errors.repeatPassword}
@@ -185,29 +142,14 @@ const Signup = () => {
 
         {/* First Name Input */}
         <div className="relative z-0 w-full mb-6 group">
-          <label
-            htmlFor="firstName"
-            className={`peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform ${
-              formik.touched.firstName && formik.errors.firstName
-                ? "text-red-500"
-                : "text-gray-500"
-            } ${
-              formik.touched.firstName
-                ? "-translate-y-6 scale-75 top-3 -z-10 origin-[0]"
-                : ""
-            } peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 ${
-              formik.touched.firstName
-                ? "peer-focus:scale-75 peer-focus:-translate-y-6"
-                : ""
-            }`}
-          >
-            First name
+          <label htmlFor="firstName" className="">
+            First Name
           </label>
           <input
-            type="text"
+            type="firstName"
             name="firstName"
             id="firstName"
-            className={`block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 ${
+            className={`block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0  border-b-2 ${
               formik.touched.firstName && formik.errors.firstName
                 ? "border-red-500"
                 : "border-gray-300"
@@ -225,29 +167,14 @@ const Signup = () => {
 
         {/* Last Name Input */}
         <div className="relative z-0 w-full mb-6 group">
-          <label
-            htmlFor="lastName"
-            className={`peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform ${
-              formik.touched.lastName && formik.errors.lastName
-                ? "text-red-500"
-                : "text-gray-500"
-            } ${
-              formik.touched.lastName
-                ? "-translate-y-6 scale-75 top-3 -z-10 origin-[0]"
-                : ""
-            } peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 ${
-              formik.touched.lastName
-                ? "peer-focus:scale-75 peer-focus:-translate-y-6"
-                : ""
-            }`}
-          >
-            Last name
+          <label htmlFor="lastName" className="">
+            Last Name
           </label>
           <input
-            type="text"
+            type="lastName"
             name="lastName"
             id="lastName"
-            className={`block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 ${
+            className={`block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0  border-b-2 ${
               formik.touched.lastName && formik.errors.lastName
                 ? "border-red-500"
                 : "border-gray-300"
@@ -256,7 +183,6 @@ const Signup = () => {
             required
             {...formik.getFieldProps("lastName")}
           />
-
           {formik.touched.lastName && formik.errors.lastName ? (
             <div className="text-red-500 text-sm mt-1">
               {formik.errors.lastName}
@@ -272,6 +198,13 @@ const Signup = () => {
           Type={"submit"}
         />
       </form>
+      <p className="mt-2 pb-4">
+        Please{" "}
+        <Link href="/login">
+          <span className="font-bold text-yellow-500">Login</span>
+        </Link>{" "}
+        if you already have an Account
+      </p>
     </div>
   );
 };

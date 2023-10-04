@@ -3,7 +3,7 @@
   "rules": {
     "prefer-const": "error", //prevents unnecessary usage of let instead of const
     "prefer-promise-reject-errors": "error",
-    "prefer-arrow-callback": "error", //prefer arrow functions
+    // "prefer-arrow-callback": "error", //prefer arrow functions
     "prefer-template": "error", //prefer usage of template literals
     "padding-line-between-statements": [
       "error",

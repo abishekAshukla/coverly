@@ -7,9 +7,6 @@ export default function Document() {
         <script
           async
           src="https://checkout.razorpay.com/v1/checkout.js"
-          onLoad={() => {
-            console.log("Razorpay script has loaded");
-          }}
         ></script>
       </Head>
       <body>

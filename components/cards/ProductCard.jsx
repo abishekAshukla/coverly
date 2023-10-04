@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { addToWishlist2, removeFromWishList } from "@/config/api";
-import { useAccessToken } from "@/hooks/useAcessToken";
+import { useAuth } from "@/contexts/AuthContext";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { AiFillHeart } from "react-icons/ai";
@@ -19,70 +19,19 @@ export default function ProductCard({
   },
 }) {
   const [isWishlisted, setIsWishlisted] = useState(false);
-  const [wishListItems, setWishListItems] = useState([]);
-  const { accessToken } = useAccessToken();
+  const { accessToken } = useAuth();
   const currentProductId = product_link.split("/")[2];
 
   // get wishlisted items of current user from localstorage
 
   useEffect(() => {
     const wishListedItems = JSON.parse(localStorage.getItem("wishListItems"));
-    setWishListItems(wishListedItems);
-
     if (wishListedItems && wishListedItems.includes(currentProductId)) {
       setIsWishlisted(true);
     }
   }, []);
 
   const toggleWishlist = async () => {
-    if (isWishlisted) {
-      try {
-        // update database
-        const response = await removeFromWishList(
-          currentProductId,
-          accessToken
-        );
-
-        //  update local state array
-        setWishListItems(response.updatedWishListItems);
-
-        // Update localStorage
-        localStorage.setItem(
-          "wishListItems",
-          JSON.stringify(response.updatedWishListItems)
-        );
-
-        // toggle icon
-        setIsWishlisted(!isWishlisted);
-
-        toast.success("Item Removed from wishlist");
-      } catch (error) {
-        toast.error("There was an error removing from wishlist");
-      }
-    } else {
-      try {
-        // update database
-        const response = await addToWishlist2(accessToken, currentProductId);
-
-        // update local state array
-        setWishListItems(response.updatedWishListItems);
-
-        // Update localStorage
-        localStorage.setItem(
-          "wishListItems",
-          JSON.stringify(response.updatedWishListItems)
-        );
-        // toggle icon
-        setIsWishlisted(!isWishlisted);
-
-        toast.success("Item added to wishlist");
-      } catch (error) {
-        toast.error("There was an error adding to wishlist");
-      }
-    }
-  };
-
-  const toggleWishlist2 = async () => {
     try {
       let response;
 
@@ -95,9 +44,6 @@ export default function ProductCard({
         response = await addToWishlist2(accessToken, currentProductId);
         toast.success("Item added to wishlist");
       }
-
-      // Update local state array
-      setWishListItems(response.updatedWishListItems);
 
       // Update localStorage
       localStorage.setItem(
@@ -117,7 +63,7 @@ export default function ProductCard({
   };
 
   return (
-    <div className={`border mt-6 mx-2`}>
+    <div className={`border mt-6 mx-2 md:max-w-[30%]`}>
       <div className="flex justify-between">
         <div className="bg-gray-500 text-white inline px-3 py-1 text-xs">
           {brand.toUpperCase()}
@@ -126,7 +72,7 @@ export default function ProductCard({
           className={`mt-1 mr-1 ${isWishlisted ? "heart-red" : ""}`}
           initial={{ scale: 1 }}
           whileTap={{ scale: 0.6 }} // Immediate scaling animation on tap
-          onClick={toggleWishlist2}
+          onClick={toggleWishlist}
         >
           <AiFillHeart
             className={`text-xl ${

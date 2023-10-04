@@ -1,14 +1,18 @@
 import Heading from "@/components/widgets/Heading";
 import MainButton from "@/components/widgets/MainButton";
+import BreadCrumb from "@/components/common/BreadCrumb";
 import api from "@/config/api";
+import { useAuth } from "@/contexts/AuthContext";
 import { LoginValidation } from "@/schema/LoginPageValidation"; // Create validation schema for login
 import { FaSignInAlt } from "react-icons/fa"; // Import the login icon
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const Login = () => {
   const router = useRouter();
+  const { updateAccessToken } = useAuth();
 
   const handleLogin = async (email, password) => {
     try {
@@ -16,11 +20,11 @@ const Login = () => {
         email: email,
         password: password,
       });
-      console.log(response.data);
 
       if (response.status === 200) {
         localStorage.setItem("userInfo", JSON.stringify(response.data));
         localStorage.setItem("accessToken", response.data.accessToken);
+        updateAccessToken(response.data.accessToken);
         localStorage.setItem(
           "wishListItems",
           JSON.stringify(response.data.wishListIems)
@@ -37,7 +41,6 @@ const Login = () => {
         });
       }
     } catch (error) {
-      console.log(error);
       if (error.response.status === 401) {
         toast.error("User not found. Please check your credentials.");
       } else {
@@ -66,7 +69,8 @@ const Login = () => {
   });
 
   return (
-    <div className="flex flex-col justify-center items-center mt-7">
+    <div className="flex flex-col justify-center items-center pt-8">
+      <BreadCrumb />
       <Heading text="Login into your Account" />
       <form
         className="border-2 w-4/5 lg:w-2/5 p-5 mt-5"
@@ -99,30 +103,15 @@ const Login = () => {
 
         {/* Password Input */}
         <div className="relative z-0 w-full mb-6 group">
-          <label
-            htmlFor="password"
-            className={`peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform ${
-              formik.touched.password && formik.errors.password
-                ? "text-red-500"
-                : "text-gray-500"
-            } ${
-              formik.touched.password
-                ? "-translate-y-6 scale-75 top-3 -z-10 origin-[0]"
-                : ""
-            } peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 ${
-              formik.touched.password
-                ? "peer-focus:scale-75 peer-focus:-translate-y-6"
-                : ""
-            }`}
-          >
+          <label htmlFor="email" className="">
             Password
           </label>
           <input
             type="password"
             name="password"
             id="password"
-            className={`block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 ${
-              formik.touched.password && formik.errors.password
+            className={`block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0  border-b-2 ${
+              formik.touched.email && formik.errors.email
                 ? "border-red-500"
                 : "border-gray-300"
             } appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
@@ -153,6 +142,13 @@ const Login = () => {
           />
         </div>
       </form>
+      <p className="mt-4">
+        Please{" "}
+        <Link href="/signup">
+          <span className="font-bold text-yellow-500">Signup</span>
+        </Link>{" "}
+        if you dont have an Account
+      </p>
     </div>
   );
 };

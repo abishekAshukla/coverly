@@ -126,4 +126,140 @@ export const removeFromCart = async (accessToken, productId) => {
   }
 };
 
+export const clearCart = async (accessToken) => {
+  try {
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    };
+
+    const response = await api.delete("/users/clearcart", { headers });
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const createOrder = async (accessToken, amount) => {
+  try {
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    };
+
+    const data = {
+      amount: amount,
+    };
+
+    const response = await api.post("/payment/orders", data, { headers });
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const verifyPayment = async (accessToken, orderData) => {
+  try {
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    };
+
+    const response = await api.post("/payment/verify", orderData, { headers });
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const saveOrder = async (accessToken, orderData) => {
+  try {
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    };
+
+    const response = await api.post("/payment/saveorder", orderData, {
+      headers,
+    });
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getAllOrdersOfUser = async (accessToken) => {
+  try {
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+    };
+
+    const response = await api.get("/users/orders", { headers });
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getAllBrandNames = async () => {
+  try {
+    const response = await api.get("/brands");
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getAllModelNames = async () => {
+  try {
+    const response = await api.get("/brands/models");
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getAllProductIds = async () => {
+  try {
+    const response = await api.get("/products/all-products-ids");
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getProductDataByBrandId = async (BrandId) => {
+  try {
+    const response = await api.get(`/products/brand/${BrandId}?page=1`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getProductDataByBrandIdAndModelId = async (BrandId, ModelId) => {
+  try {
+    const response = await api.get(
+      `/products/model/${BrandId}/${ModelId}?page=1`
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const searchProducts = async (query) => {
+  try {
+    const response = await api.get(`/products/search?query=${query}&page=1`);
+    return response.data.products;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export default api;

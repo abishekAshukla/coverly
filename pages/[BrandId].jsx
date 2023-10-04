@@ -1,13 +1,13 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
 import BreadCrumb from "@/components/common/BreadCrumb";
 import ProductList from "@/components/lists/ProductList";
-import usePagination from "@/hooks/usePagination";
 import GlobalLoader from "@/components/loaders/GlobalLoader";
+import { getAllBrandNames, getProductDataByBrandId } from "@/config/api";
+import usePagination from "@/hooks/usePagination";
 
 const BrandId = ({ productData }) => {
-  const [producDataState, setProducDataState] = useState(productData);
   const { data, loading } = usePagination();
+  const [producDataState, setProducDataState] = useState(productData);
 
   // add new products into existing state when user reaches to bottom of the page
   useEffect(() => {
@@ -36,18 +36,9 @@ const BrandId = ({ productData }) => {
 
 export default BrandId;
 
-const data = [
-  { brandName: "apple", modelName: "iphone-13" },
-  { brandName: "apple", modelName: "iphone-14" },
-  { brandName: "apple", modelName: "iphone-3" },
-];
-
 export async function getStaticPaths() {
-  const apiUrl = process.env.API_BASE_URL;
   try {
-    const response = await axios.get(`${apiUrl}/api/brands`);
-    const brandData = response.data;
-
+    const brandData = await getAllBrandNames();
     const paths = brandData.map((brand) => ({
       params: { BrandId: brand },
     }));
@@ -57,7 +48,6 @@ export async function getStaticPaths() {
       fallback: false,
     };
   } catch (error) {
-    console.error("Error fetching brand data:", error);
     return {
       paths: [],
       fallback: false,
@@ -67,13 +57,9 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   const { BrandId } = params;
-  const apiUrl = process.env.API_BASE_URL;
-
   try {
-    const response = await axios.get(
-      `${apiUrl}/api/products/brand/${BrandId}?page=1`
-    );
-    const productData = response.data.products;
+    const response = await getProductDataByBrandId(BrandId);
+    const productData = response.products;
 
     return {
       props: {
@@ -81,7 +67,6 @@ export async function getStaticProps({ params }) {
       },
     };
   } catch (error) {
-    console.error("Error fetching product data:", error);
     return {
       props: {
         productData: [],

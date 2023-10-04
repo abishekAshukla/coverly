@@ -7,7 +7,7 @@ import QuantityInput from "@/components/widgets/QuantityInput";
 import { AiOutlineShoppingCart, AiFillHeart } from "react-icons/ai";
 import MainButton from "@/components/widgets/MainButton";
 import { toast } from "react-toastify";
-import { useAccessToken } from "@/hooks/useAcessToken";
+import { useAuth } from "@/contexts/AuthContext";
 
 const ProductID = ({
   productData: {
@@ -21,7 +21,7 @@ const ProductID = ({
   },
 }) => {
   const currentProductId = product_link.split("/")[2];
-  const { accessToken } = useAccessToken();
+  const { accessToken } = useAuth();
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [isWishlisted, setIsWishlisted] = useState(false);
 
@@ -151,7 +151,6 @@ export async function getStaticPaths() {
       fallback: false,
     };
   } catch (error) {
-    console.error("Error fetching brand data:", error);
     return {
       paths: [],
       fallback: false,
@@ -175,7 +174,6 @@ export async function getStaticProps({ params }) {
       },
     };
   } catch (error) {
-    console.error("Error fetching product data:", error);
     return {
       props: {
         productData: [],
