@@ -1,4 +1,4 @@
-# Coverly: Ecommerce Platform for Mobile Back Covers
+# Coverly: Ecommerce Platform for Mobile Back Covers with Payment Integration
 
 <div style="text-align: center;">
   <img src="https://coverly-web.vercel.app/_next/image?url=%2Fassets%2Fimages%2FbackCoverThumbnail.webp&w=256&q=75" alt="Coverly" />
