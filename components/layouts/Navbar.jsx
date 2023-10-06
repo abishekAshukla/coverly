@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ConfirmModal from "../common/ConfirmModal";
 import SearchResult from "../common/SearchResult";
+import Tooltip from "../widgets/Tooltip";
 import { useAuth } from "@/contexts/AuthContext";
 import { FaHeart, FaShoppingCart, FaUser, FaShoppingBag } from "react-icons/fa";
 import { AiFillHome } from "react-icons/ai";
@@ -9,13 +10,19 @@ import { useRouter } from "next/router";
 
 const Navbar = () => {
   const router = useRouter();
-  const { updateAcessTokenWhenLogout, isAuthenticated } = useAuth();
+  const {
+    updateAcessTokenWhenLogout,
+    isAuthenticated,
+    removeNoOfItemsInCart,
+    noOfItemsInCart,
+  } = useAuth();
 
   const handleLogOut = () => {
     setIsConfirmationModalOpen(false);
     localStorage.removeItem("userInfo");
     localStorage.removeItem("accessToken");
     localStorage.removeItem("wishListItems");
+    removeNoOfItemsInCart();
     updateAcessTokenWhenLogout();
     router.push("/login");
   };
@@ -77,6 +84,11 @@ const Navbar = () => {
             className="text-gray-500"
           />
           <FaUser onClick={handleLogOutClick} className="text-gray-500" />
+          {noOfItemsInCart > 0 && (
+            <div className="absolute top-1 right-9 bg-red-500 rounded-full flex justify-center items-center text-center h-4 w-4 text-[10px] text-white">
+              {noOfItemsInCart}
+            </div>
+          )}
         </div>
       </div>
 
@@ -86,31 +98,47 @@ const Navbar = () => {
         <SearchResult />
         {/* icons */}
         <div className="hidden md:flex space-x-4 ml-3">
-          <AiFillHome
-            onClick={() => {
-              router.push("/");
-            }}
-            className="text-gray-500"
-          />
-          <FaHeart
-            onClick={() => {
-              router.push("/wishlist");
-            }}
-            className="text-gray-500"
-          />
-          <FaShoppingBag
-            onClick={() => {
-              router.push("/orders");
-            }}
-            className="text-gray-500"
-          />
-          <FaShoppingCart
-            onClick={() => {
-              router.push("/cart");
-            }}
-            className="text-gray-500"
-          />
-          <FaUser onClick={handleLogOutClick} className="text-gray-500" />
+          <Tooltip text="Home">
+            <AiFillHome
+              onClick={() => {
+                router.push("/");
+              }}
+              className="text-gray-500"
+            />
+          </Tooltip>
+          <Tooltip text="Wishlist">
+            <FaHeart
+              onClick={() => {
+                router.push("/wishlist");
+              }}
+              className="text-gray-500"
+            />
+          </Tooltip>
+          <Tooltip text="Orders">
+            <FaShoppingBag
+              onClick={() => {
+                router.push("/orders");
+              }}
+              className="text-gray-500"
+            />{" "}
+          </Tooltip>
+          <Tooltip text="Cart">
+            <FaShoppingCart
+              onClick={() => {
+                router.push("/cart");
+              }}
+              className="text-gray-500"
+            />
+          </Tooltip>
+          <Tooltip text="Logout">
+            <FaUser onClick={handleLogOutClick} className="text-gray-500" />
+          </Tooltip>
+
+          {noOfItemsInCart > 0 && (
+            <div className="absolute top-4 right-8 bg-red-500 rounded-full flex justify-center items-center text-center h-5 w-5 text-xs text-white">
+              {noOfItemsInCart}
+            </div>
+          )}
         </div>
       </div>
     </nav>

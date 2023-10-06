@@ -1,14 +1,13 @@
-// this hook provides a state which tells when user reaches to bottom of the page
 import { useEffect, useState } from "react";
 
-const useBottomReached = (threshold = 10) => {
+const useBottomReached = (threshold = 200) => {
   const [bottomReached, setBottomReached] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       const { scrollTop, scrollHeight, clientHeight } =
         document.documentElement;
-      if (scrollTop + clientHeight >= scrollHeight - threshold) {
+      if (scrollTop + clientHeight + threshold >= scrollHeight) {
         setBottomReached(true);
       } else {
         setBottomReached(false);

@@ -21,7 +21,7 @@ const ProductID = ({
   },
 }) => {
   const currentProductId = product_link.split("/")[2];
-  const { accessToken } = useAuth();
+  const { accessToken, updateNoOfItemsInCart, noOfItemsInCart } = useAuth();
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [isWishlisted, setIsWishlisted] = useState(false);
 
@@ -78,7 +78,14 @@ const ProductID = ({
   };
 
   const addItemToCart = async () => {
-    await addToCart(accessToken, currentProductId, selectedQuantity);
+    const response = await addToCart(
+      accessToken,
+      currentProductId,
+      selectedQuantity
+    );
+    if (response) {
+      updateNoOfItemsInCart(noOfItemsInCart + selectedQuantity);
+    }
   };
 
   return (

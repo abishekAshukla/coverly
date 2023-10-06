@@ -33,7 +33,7 @@ export default function Home({ brandsWithModels }) {
   };
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center h-[1000px]">
       <div className="bg-gray-100 w-[90%] sm:w-[75%] mt-12 px-8 py-12 border text-center">
         <h1 className="text-2xl font-bold">Select Brand and Model of Phone</h1>
         <div className="flex justify-between mt-8">

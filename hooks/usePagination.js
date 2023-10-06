@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import useBottomReached from "./useBottomReached";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 const usePagination = () => {
   const router = useRouter();

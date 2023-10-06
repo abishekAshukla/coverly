@@ -18,7 +18,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 
 const Cart = () => {
-  const { accessToken, isAuthenticated } = useAuth();
+  const { accessToken, isAuthenticated, updateNoOfItemsInCart } = useAuth();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [loadingUpdatedCart, setLoadingUpdatedCart] = useState(false);
@@ -32,6 +32,12 @@ const Cart = () => {
       setLoading(true);
       const response = await getAllCartItems(accessToken);
       setProductData(response.cartItems);
+      updateNoOfItemsInCart(
+        response.cartItems.reduce(
+          (total, product) => total + product.quantity,
+          0
+        )
+      );
       setLoading(false);
     } catch (error) {
       setLoading(false);

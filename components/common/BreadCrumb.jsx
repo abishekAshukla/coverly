@@ -22,6 +22,7 @@ export default function BreadCrumb() {
     const targetPath = `/${convertPathnameToArray(pathname)
       .slice(0, index + 1)
       .join("/")}`;
+    if (targetPath === "/product") return;
     router.push(targetPath);
   };
 

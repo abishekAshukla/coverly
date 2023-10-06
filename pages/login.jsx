@@ -12,7 +12,7 @@ import Link from "next/link";
 
 const Login = () => {
   const router = useRouter();
-  const { updateAccessToken } = useAuth();
+  const { updateAccessToken, updateNoOfItemsInCart } = useAuth();
 
   const handleLogin = async (email, password) => {
     try {
@@ -24,6 +24,7 @@ const Login = () => {
       if (response.status === 200) {
         localStorage.setItem("userInfo", JSON.stringify(response.data));
         localStorage.setItem("accessToken", response.data.accessToken);
+        updateNoOfItemsInCart(response.data.noItemsInCart);
         updateAccessToken(response.data.accessToken);
         localStorage.setItem(
           "wishListItems",
