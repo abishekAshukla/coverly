@@ -1,6 +1,8 @@
+import { useState } from "react";
 import Heading from "@/components/widgets/Heading";
 import MainButton from "@/components/widgets/MainButton";
 import BreadCrumb from "@/components/common/BreadCrumb";
+import GlobalLoader from "@/components/loaders/GlobalLoader";
 import api from "@/config/api";
 import { useAuth } from "@/contexts/AuthContext";
 import { LoginValidation } from "@/schema/LoginPageValidation"; // Create validation schema for login
@@ -13,13 +15,16 @@ import Link from "next/link";
 const Login = () => {
   const router = useRouter();
   const { updateAccessToken, updateNoOfItemsInCart } = useAuth();
+  const [showLoginLoader, setSetshowLoginLoader] = useState(false);
 
   const handleLogin = async (email, password) => {
     try {
+      setSetshowLoginLoader(true);
       const response = await api.post("/users/login", {
         email: email,
         password: password,
       });
+      setSetshowLoginLoader(false);
 
       if (response.status === 200) {
         localStorage.setItem("userInfo", JSON.stringify(response.data));
@@ -42,6 +47,7 @@ const Login = () => {
         });
       }
     } catch (error) {
+      setSetshowLoginLoader(false);
       if (error.response.status === 401) {
         toast.error("User not found. Please check your credentials.");
       } else {
@@ -71,6 +77,9 @@ const Login = () => {
 
   return (
     <div className="flex flex-col justify-center items-center pt-8">
+      {showLoginLoader && (
+        <GlobalLoader tag="Logging in....." color="black" size={60} width={6} />
+      )}
       <BreadCrumb />
       <Heading text="Login into your Account" />
       <form

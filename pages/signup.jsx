@@ -1,6 +1,8 @@
+import { useState } from "react";
 import Heading from "@/components/widgets/Heading";
 import MainButton from "@/components/widgets/MainButton";
 import BreadCrumb from "@/components/common/BreadCrumb";
+import GlobalLoader from "@/components/loaders/GlobalLoader";
 import api from "@/config/api";
 import { SignUpValidation } from "@/schema/SignupPageValidation";
 import { useFormik } from "formik";
@@ -11,15 +13,18 @@ import Link from "next/link";
 
 const Signup = () => {
   const router = useRouter();
+  const [showSignupLoader, setShowSignupLoader] = useState(false);
 
   const handleSignup = async (firstName, lastName, email, password) => {
     try {
+      setShowSignupLoader(true);
       const response = await api.post("/users/register", {
         firstName: firstName,
         lastName: lastName,
         email: email,
         password: password,
       });
+      setShowSignupLoader(false);
 
       if (response.status === 201) {
         toast.success("Signup successful! Redirecting to login...", {
@@ -29,6 +34,7 @@ const Signup = () => {
         });
       }
     } catch (error) {
+      setShowSignupLoader(false);
       if (error.response.status === 400) {
         toast.error("User already exists with this email");
       } else {
@@ -59,6 +65,9 @@ const Signup = () => {
 
   return (
     <div className="flex flex-col justify-center items-center pt-3">
+      {showSignupLoader && (
+        <GlobalLoader tag="Signing up....." color="black" size={60} width={6} />
+      )}
       <BreadCrumb />
       <Heading text="Sign Up for an Account" />
       <form
