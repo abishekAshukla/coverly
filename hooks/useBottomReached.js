@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 const useBottomReached = (threshold = 200) => {
   const [bottomReached, setBottomReached] = useState(false);
 
+  // The useEffect hook is used to add a scroll event listener to the window.
   useEffect(() => {
     const handleScroll = () => {
       const { scrollTop, scrollHeight, clientHeight } =
@@ -14,6 +15,7 @@ const useBottomReached = (threshold = 200) => {
       }
     };
 
+    //The event listener invokes the handleScroll function whenever the user scrolls.
     window.addEventListener("scroll", handleScroll);
 
     return () => {

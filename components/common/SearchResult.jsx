@@ -62,7 +62,7 @@ const SearchResult = () => {
       abortController.abort();
     }
 
-    // Create a new AbortController for this request
+    // Create a new AbortController instance for this ongoing request, this controller will be passed with the fetch request as a signal to cancel the request if needed.
     const newAbortController = new AbortController();
     const newAbortSignal = newAbortController.signal;
     setAbortController(newAbortController);

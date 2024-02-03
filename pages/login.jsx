@@ -27,6 +27,11 @@ const Login = () => {
       setSetshowLoginLoader(false);
 
       if (response.status === 200) {
+        if (router.query.from) {
+          router.push(router.query.from.toString());
+        } else {
+          router.push("/");
+        }
         localStorage.setItem("userInfo", JSON.stringify(response.data));
         localStorage.setItem("accessToken", response.data.accessToken);
         updateNoOfItemsInCart(response.data.noItemsInCart);
@@ -35,16 +40,7 @@ const Login = () => {
           "wishListItems",
           JSON.stringify(response.data.wishListIems)
         );
-        toast.success("Login successful", {
-          onClose: () => {
-            // Check if there is a previous page in the history
-            if (router.query.from) {
-              router.push(router.query.from.toString());
-            } else {
-              router.push("/");
-            }
-          },
-        });
+        toast.success("Login successful");
       }
     } catch (error) {
       setSetshowLoginLoader(false);
